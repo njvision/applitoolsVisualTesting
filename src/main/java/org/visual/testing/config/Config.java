@@ -1,6 +1,7 @@
 package org.visual.testing.config;
 
 import com.applitools.eyes.BatchInfo;
+import com.applitools.eyes.MatchLevel;
 import com.applitools.eyes.selenium.BrowserType;
 import com.applitools.eyes.selenium.Configuration;
 import com.applitools.eyes.selenium.StitchMode;
@@ -33,6 +34,14 @@ public class Config {
         batchInfo = new BatchInfo(batch);
         batchInfo.setSequenceName(sequenceName);
         configuration.setStitchMode(mode);
+    }
+
+    public Config(String batch, String sequenceName, StitchMode mode, MatchLevel level) {
+        configuration = new Configuration();
+        batchInfo = new BatchInfo(batch);
+        batchInfo.setSequenceName(sequenceName);
+        configuration.setStitchMode(mode);
+        configuration.setMatchLevel(level);
     }
 
     public Config() {
