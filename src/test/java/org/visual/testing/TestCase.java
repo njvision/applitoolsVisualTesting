@@ -1,56 +1,40 @@
 package org.visual.testing;
 
-import com.applitools.eyes.BatchInfo;
 import com.applitools.eyes.EyesRunner;
 import com.applitools.eyes.RectangleSize;
-import com.applitools.eyes.selenium.BrowserType;
-import com.applitools.eyes.selenium.Configuration;
 import com.applitools.eyes.selenium.Eyes;
 import com.applitools.eyes.selenium.fluent.Target;
-import com.applitools.eyes.visualgrid.model.DeviceName;
-import com.applitools.eyes.visualgrid.model.ScreenOrientation;
 import com.applitools.eyes.visualgrid.services.RunnerOptions;
 import com.applitools.eyes.visualgrid.services.VisualGridRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
+import org.visual.testing.config.ConfigCustom;
+import org.visual.testing.data.BrowserList;
+import org.visual.testing.data.DeviceEmulationList;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 public class TestCase {
     static WebDriver driver;
-    static BatchInfo batchInfo;
-    static Configuration configuration;
+    static ConfigCustom configuration;
     static EyesRunner runner;
     Eyes eyes;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         driver = WebDriverManager.firefoxdriver().create();
-        batchInfo = new BatchInfo("First batch");
         runner = new VisualGridRunner(new RunnerOptions().testConcurrency(5));
-        configuration = new Configuration();
-        Properties prop = new Properties();
-        InputStream file = new FileInputStream("testng-selenium.properties");
-        prop.load(file);
-        configuration.setApiKey(prop.getProperty("APPLITOOLS_API_KEY"));
-        file.close();
-        configuration.setBatch(batchInfo);
-        configuration.addBrowser(1600, 1200, BrowserType.FIREFOX);
-        configuration.addBrowser(1400, 1000, BrowserType.EDGE_CHROMIUM);
-        configuration.addBrowser(1600, 1200, BrowserType.SAFARI);
-
-        configuration.addDeviceEmulation(DeviceName.Galaxy_Note_3, ScreenOrientation.PORTRAIT);
-        configuration.addDeviceEmulation(DeviceName.Galaxy_Note_3, ScreenOrientation.LANDSCAPE);
+        configuration = new ConfigCustom("First batch", new BrowserList().getList(), new DeviceEmulationList().getList());
+        configuration.setConfig();
+        configuration.addListBrowser();
+        configuration.addListDeviceEmulation();
     }
 
     @BeforeEach
     public void beforeEach(TestInfo testInfo) {
         eyes = new Eyes(runner);
-        eyes.setConfiguration(configuration);
+        eyes.setConfiguration(configuration.getConfiguration());
         eyes.open(
                 driver,
                 "Visual Tests",
