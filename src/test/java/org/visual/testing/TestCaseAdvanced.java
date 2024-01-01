@@ -2,33 +2,40 @@ package org.visual.testing;
 
 import com.applitools.eyes.EyesRunner;
 import com.applitools.eyes.RectangleSize;
+import com.applitools.eyes.selenium.ClassicRunner;
 import com.applitools.eyes.selenium.Eyes;
+import com.applitools.eyes.selenium.StitchMode;
 import com.applitools.eyes.selenium.fluent.Target;
 import com.applitools.eyes.visualgrid.services.RunnerOptions;
 import com.applitools.eyes.visualgrid.services.VisualGridRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.visual.testing.config.Config;
 import org.visual.testing.config.ConfigCustom;
 import org.visual.testing.data.BrowserList;
 import org.visual.testing.data.DeviceEmulationList;
 
 import java.io.IOException;
 
-public class TestCase {
+public class TestCaseAdvanced {
     static WebDriver driver;
-    static ConfigCustom configuration;
+    static Config configuration;
     static EyesRunner runner;
     Eyes eyes;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         driver = WebDriverManager.firefoxdriver().create();
-        runner = new VisualGridRunner(new RunnerOptions().testConcurrency(5));
-        configuration = new ConfigCustom("First batch", new BrowserList().getList(), new DeviceEmulationList().getList());
+        runner = new ClassicRunner();
+        configuration = new Config("Second batch", "Advanced Visual Testing", StitchMode.CSS);
         configuration.setConfig();
-        configuration.addListBrowser();
-        configuration.addListDeviceEmulation();
     }
 
     @BeforeEach
@@ -44,15 +51,15 @@ public class TestCase {
     }
 
     @Test
-    public void myTestCase() {
-        driver.get("https://applitools.com/helloworld/");
-        eyes.check(Target.window());
+    public void testCaseFullyMode() {
+        driver.get("https://applitools.com/tutorials/");
+        eyes.check(Target.window().fully());
     }
 
     @Test
-    public void myAnotherTestCase() {
-        driver.get("https://example.com/");
-        eyes.check(Target.window());
+    public void checkElementByClassName() {
+        driver.get("https://applitools.com/tutorials/quickstart/web/selenium/java/junit");
+        eyes.check(Target.region(By.cssSelector(".menu")).fully());
     }
 
     @AfterEach

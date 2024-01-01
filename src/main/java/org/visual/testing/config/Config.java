@@ -3,6 +3,7 @@ package org.visual.testing.config;
 import com.applitools.eyes.BatchInfo;
 import com.applitools.eyes.selenium.BrowserType;
 import com.applitools.eyes.selenium.Configuration;
+import com.applitools.eyes.selenium.StitchMode;
 import com.applitools.eyes.visualgrid.model.DeviceName;
 import com.applitools.eyes.visualgrid.model.ScreenOrientation;
 
@@ -19,6 +20,19 @@ public class Config {
     public Config(String batch) {
         configuration = new Configuration();
         batchInfo = new BatchInfo(batch);
+    }
+
+    public Config(String batch, String sequenceName) {
+        configuration = new Configuration();
+        batchInfo = new BatchInfo(batch);
+        batchInfo.setSequenceName(sequenceName);
+    }
+
+    public Config(String batch, String sequenceName, StitchMode mode) {
+        configuration = new Configuration();
+        batchInfo = new BatchInfo(batch);
+        batchInfo.setSequenceName(sequenceName);
+        configuration.setStitchMode(mode);
     }
 
     public Config() {
