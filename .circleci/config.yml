@@ -1,0 +1,18 @@
+orbs:
+  browser-tools: circle/browser-tools@1.1.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - browser-tools/install-chrome
+      - chckout
+      - run:
+          export APPLITOOLS_BATCH_ID=$(echo $CIRCLE_SHA1)
+          mvn clean test
+
+workflows:
+  build-and-test:
+    jobs:
+      - build

@@ -36,6 +36,14 @@ public class Config {
         configuration.setStitchMode(mode);
     }
 
+    public Config(String batch, String sequenceName, StitchMode mode, String branchName) {
+        configuration = new Configuration();
+        batchInfo = new BatchInfo(batch);
+        batchInfo.setSequenceName(sequenceName);
+        configuration.setStitchMode(mode);
+        configuration.setBranchName(branchName);
+    }
+
     public Config(String batch, String sequenceName, StitchMode mode, MatchLevel level) {
         configuration = new Configuration();
         batchInfo = new BatchInfo(batch);

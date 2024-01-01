@@ -1,7 +1,6 @@
 package org.visual.testing;
 
 import com.applitools.eyes.EyesRunner;
-import com.applitools.eyes.MatchLevel;
 import com.applitools.eyes.RectangleSize;
 import com.applitools.eyes.selenium.ClassicRunner;
 import com.applitools.eyes.selenium.Eyes;
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.visual.testing.config.Config;
 
 import java.io.IOException;
@@ -28,10 +28,10 @@ public class TestCaseAdvanced {
 
     @BeforeAll
     static void beforeAll() throws IOException {
-        driver = WebDriverManager.firefoxdriver().create();
+        driver = switchDriver(false);
         runner = new ClassicRunner();
         configuration = new Config("Second batch", "Advanced Visual Testing",
-                StitchMode.CSS);
+                StitchMode.CSS, "branch");
         configuration.setConfig();
     }
 
@@ -76,5 +76,15 @@ public class TestCaseAdvanced {
     static void afterAll() {
         driver.close();
         System.out.println(runner.getAllTestResults());
+    }
+
+    private static WebDriver switchDriver(boolean flag) {
+        if (flag) {
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+            firefoxOptions.addArguments("--headless");
+            return WebDriverManager.firefoxdriver().capabilities(firefoxOptions).create();
+        } else {
+            return WebDriverManager.firefoxdriver().create();
+        }
     }
 }
