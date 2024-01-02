@@ -20,7 +20,7 @@ import org.visual.testing.config.Config;
 
 import java.io.IOException;
 
-public class TestCaseAdvanced {
+public class AdvancedTest {
     static WebDriver driver;
     static Config configuration;
     static EyesRunner runner;

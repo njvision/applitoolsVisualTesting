@@ -7,7 +7,13 @@ import com.applitools.eyes.selenium.fluent.Target;
 import com.applitools.eyes.visualgrid.services.RunnerOptions;
 import com.applitools.eyes.visualgrid.services.VisualGridRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.visual.testing.config.ConfigCustom;
 import org.visual.testing.data.BrowserList;
@@ -15,7 +21,7 @@ import org.visual.testing.data.DeviceEmulationList;
 
 import java.io.IOException;
 
-public class TestCase {
+public class ResponsiveTest {
     static WebDriver driver;
     static ConfigCustom configuration;
     static EyesRunner runner;
@@ -25,7 +31,7 @@ public class TestCase {
     static void beforeAll() throws IOException {
         driver = WebDriverManager.firefoxdriver().create();
         runner = new VisualGridRunner(new RunnerOptions().testConcurrency(5));
-        configuration = new ConfigCustom("First batch", new BrowserList().getList(), new DeviceEmulationList().getList());
+        configuration = new ConfigCustom("batch3", new BrowserList().getList(), new DeviceEmulationList().getList(), true);
         configuration.setConfig();
         configuration.addListBrowser();
         configuration.addListDeviceEmulation();
@@ -44,15 +50,18 @@ public class TestCase {
     }
 
     @Test
-    public void myTestCase() {
-        driver.get("https://applitools.com/helloworld/");
-        eyes.check(Target.window());
+    public void responsiveDesignTest() {
+        driver.get("https://applitools.com/");
+        eyes.check(Target.window().layoutBreakpoints(true).lazyLoad());
     }
 
     @Test
-    public void myAnotherTestCase() {
-        driver.get("https://example.com/");
-        eyes.check(Target.window());
+    public void ignoreDisplacement() {
+        driver.get("https://applitools.com/helloworld/");
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("document.querySelector('div.fancy:nth-child(1)').style.borderBottom = '5px solid grey'");
+
+        eyes.check(Target.window().ignoreDisplacements());
     }
 
     @AfterEach

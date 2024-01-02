@@ -18,6 +18,13 @@ public class ConfigCustom extends Config {
         this.deviceEmulation = deviceEmulation;
     }
 
+    public ConfigCustom(String batch, List<Browser> browser, List<DeviceEmulation> deviceEmulation, boolean breakPoint) {
+        super(batch);
+        this.browser = browser;
+        this.deviceEmulation = deviceEmulation;
+        configuration.setLayoutBreakpoints(breakPoint);
+    }
+
     public ConfigCustom(List<Browser> browser, List<DeviceEmulation> deviceEmulation) {
         this.browser = browser;
         this.deviceEmulation = deviceEmulation;
